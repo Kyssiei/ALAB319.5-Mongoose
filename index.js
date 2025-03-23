@@ -1,18 +1,18 @@
-import express from "express";
-import mongoose from "mongoose";
+import express, { Router } from "express";
 import dotenv from "dotenv";
-import { ObjectId } from "mongodb";
-
+import router from "./routes/grades.js";
+import mongoose from "mongoose";
 dotenv.config();
 
-
-import router from "./routes/grades.js";
+// console.log(process.env.ATLAS_URI)
 
 // Wait to connect to the DB
 await mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB."))
-  .catch((e) => console.error(e))
+  .connect(process.env.ATLAS_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(e => console.error(e))
+
+
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the API.");
 });
 
-app.use('/grades', router)
+app.use("/grades", router ); 
 
 // Global error handling
 app.use((err, _req, res, next) => {
@@ -32,5 +32,5 @@ app.use((err, _req, res, next) => {
 
 // Start the Express server
 app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT}`);
+  console.log(`Server is running on port: ${PORT}`); 
 });
